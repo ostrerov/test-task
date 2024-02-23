@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
+Route::post('/accounts', [\App\Http\Controllers\IndexController::class, 'storeAccounts'])->name('store-accounts');
+Route::post('/deals', [\App\Http\Controllers\IndexController::class, 'storeDeals'])->name('store-deals');
+
+Route::post('/get-deals', [\App\Http\Controllers\IndexController::class, 'getDeals']);
+Route::post('/get-accounts', [\App\Http\Controllers\IndexController::class, 'getAccounts']);
