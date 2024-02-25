@@ -114,12 +114,12 @@
                                     </div>
                                     <div class="space-y-1">
                                         <label for="stage" class="font-medium">Stage</label>
-                                        <Dropdown @click="getDeals" v-model="formDeals.stage" :options="deals" optionLabel="Stage" optionValue="Stage" class="w-full" show-clear placeholder="Select stage" />
+                                        <Dropdown @click="getDeals" v-model="formDeals.stage" :options="deals" empty-message="Loading..." optionLabel="Stage" optionValue="Stage" class="w-full" show-clear placeholder="Select stage" />
                                         <div class="text-sm text-red-600 space-y-1">{{ formDeals.errors.stage }}</div>
                                     </div>
                                     <div class="space-y-1">
                                         <label for="stage" class="font-medium">Account Name</label>
-                                        <Dropdown @click="getAccounts" v-model="formDeals.accountName" :options="accounts" optionLabel="Account_Name" optionValue="Account_Name" class="w-full" show-clear placeholder="Select account" />
+                                        <Dropdown @click="getAccounts" v-model="formDeals.accountName" :options="accounts" empty-message="Loading..." optionLabel="Account_Name" optionValue="Account_Name" class="w-full" show-clear placeholder="Select account" />
                                         <div class="text-sm text-red-600 space-y-1">{{ formDeals.errors.accountName }}</div>
                                     </div>
                                     <div class="space-y-1">
@@ -167,6 +167,10 @@ const formDeals = useForm({
     closingDate: null
 })
 
+function addToast(type: string, title: string, message: string) {
+    this.$toast.add({ severity: type, summary: title, detail: message, life: 3000 });
+}
+
 export default defineComponent({
     components: {
         Dropdown,
@@ -203,7 +207,7 @@ export default defineComponent({
                 preserveScroll: true,
                 onSuccess: () => {
                     formAccounts.reset('name', 'website', 'phone')
-                    this.$toast.add({ severity: 'success', summary: 'Accounts', detail: 'Account successfully created', life: 3000 });
+                    addToast('success', 'Accounts', 'Account successfully created');
                 }
             })
         },
@@ -212,7 +216,7 @@ export default defineComponent({
                 preserveScroll: true,
                 onSuccess: () => {
                     formDeals.reset('name', 'stage', 'accountName', 'closingDate')
-                    this.$toast.add({ severity: 'success', summary: 'Deals', detail: 'Deal successfully created', life: 3000 });
+                    addToast('success', 'Deals', 'Deal successfully created');
                 }
             })
         },
@@ -230,7 +234,7 @@ export default defineComponent({
                         this.deals = res.data.data
                     })
                     .catch(function () {
-                        this.$toast.add({ severity: 'error', summary: 'Stages error', detail: 'An error occurred while loading stages', life: 3000 });
+                        addToast('error', 'Stages error', 'An error occurred while loading stages');
                     })
 
                 this.dropdownLoading = false
@@ -250,12 +254,12 @@ export default defineComponent({
                         this.accounts = res.data.data
                     })
                     .catch(function () {
-                        this.$toast.add({ severity: 'error', summary: 'Accounts error', detail: 'An error occurred while loading accounts', life: 3000 });
+                        addToast('error', 'Accounts error', 'An error occurred while loading accounts');
                     })
 
                 this.dropdownLoading = false
             });
-        }
+        },
     },
     setup() {
         return {

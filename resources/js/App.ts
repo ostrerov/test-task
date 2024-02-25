@@ -15,13 +15,12 @@ createInertiaApp({
     },
     setup({el, App, props, plugin}) {
         const app = createApp({render: () => h(App, props)})
+            .use(plugin)
             .use(PrimeVue, {
                 unstyled: true,
                 pt: Lara
             })
-            .use(plugin)
             .use(ToastService)
-            .provide('toast', PrimeVue)
             .mount(el)
     },
 })
